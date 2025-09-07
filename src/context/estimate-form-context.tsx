@@ -134,6 +134,8 @@ export function EstimateFormProvider({
       );
     });
 
+    await supabaseClient.from("steps").delete().eq("estimate_id", estimateId);
+
     await supabaseClient.from("steps").insert(formattedSteps.mainSteps);
     await supabaseClient.from("steps").insert(formattedSteps.subSteps);
 
@@ -145,6 +147,10 @@ export function EstimateFormProvider({
       user_id: user.sub,
     }));
 
+    await supabaseClient
+      .from("schedule")
+      .delete()
+      .eq("estimate_id", estimateId);
     await supabaseClient.from("schedule").insert(paymentSchedule);
   };
 
