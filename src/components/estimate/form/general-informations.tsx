@@ -102,7 +102,6 @@ export default function NewEstimateGeneralInformations() {
                       </div>
                     </div>
                     <div className="flex items-center gap-2">
-                      <ColorPickerOutput />
                       <ColorPickerFormat className="bg-muted" />
                     </div>
                   </ColorPicker>

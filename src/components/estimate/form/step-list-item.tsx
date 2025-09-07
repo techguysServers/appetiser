@@ -39,6 +39,10 @@ export default function StepListItem({
 
         <div>
           <div className="font-medium">
+            <span
+              className={`inline-block size-3 mr-2 rounded-full`}
+              style={{ background: step.color }}
+            />
             <span>{step.name}</span>
             <span className="text-muted-foreground text-sm">
               {" "}
