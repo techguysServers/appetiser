@@ -197,12 +197,12 @@ export default function PhasesSection({
                                 Intégrations & Enjeux
                               </h4>
                             </div>
-                            {/*<ul className="px-6 py-4 list-disc text-sm text-gray-700 space-y-1">
-                                {phase.notes.map((note, i) => (
-                                  <li key={i}>{note}</li>
-                                ))}
-                              </ul>*/}
-                            {phase.notes}
+                            <ul className="px-6 py-4 list-disc text-sm text-gray-700 space-y-1">
+                              {/*{phase.notes.map((note, i) => (
+                                <li key={i}>{note}</li>
+                              ))}*/}
+                              {phase.notes}
+                            </ul>
                           </div>
                         )}
                       </td>

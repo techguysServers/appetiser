@@ -138,7 +138,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
               </div>
               <div>
                 <h1 className="text-xl md:text-2xl font-bold text-gray-900">
-                  {selectedConceptSummary.name}
+                  {estimate.name}
                 </h1>
                 <p className="hidden md:block text-gray-600 text-sm md:text-base">
                   Estimation de développement et plan de projet

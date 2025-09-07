@@ -2,7 +2,7 @@
 
 import { createClient } from "@/lib/supabase/client";
 import { CreateEstimateSchema, Estimate } from "@/schemas/estimate";
-import { createContext, ReactNode, useContext, useEffect } from "react";
+import { createContext, ReactNode, useContext } from "react";
 import { useForm } from "react-hook-form";
 import z from "zod";
 import { v4 as uuidv4 } from "uuid";
@@ -108,6 +108,7 @@ export function EstimateFormProvider({
         color: step.color,
         disable_max_multiplier: step.disableRate || false,
         is_additional: step.isAdditional || false,
+        notes: step.notes || undefined,
         hours: step.hours || 0,
         parent_id: null,
         estimate_id: estimateId,

@@ -84,6 +84,8 @@ export const supabaseEstimateToEstimate = (
       hours: s.hours ?? 0,
       color: s.color,
       disableRate: s.disable_max_multiplier || false,
+      isAdditional: s.is_additional || false,
+      notes: s.notes || undefined,
       subSteps: mapSubSteps(s.id),
     }));
   };
@@ -109,6 +111,7 @@ export const supabaseEstimateToEstimate = (
       hours: s.hours || 0,
       color: s.color,
       disableRate: s.disable_max_multiplier || false,
+      isAdditional: s.is_additional || false,
       notes: s.notes || undefined,
       subSteps: mapSubSteps(s.id),
     })),
