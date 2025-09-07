@@ -52,8 +52,8 @@ export default function TimelineSection({
     let runningMin = 0;
     let runningMax = 0;
     return schedule.repartition.map((m) => {
-      const min = Math.round(totalCostMin * m.percent);
-      const max = Math.round(totalCostMax * m.percent);
+      const min = Math.round(totalCostMin * (m.percent / 100));
+      const max = Math.round(totalCostMax * (m.percent / 100));
       runningMin += min;
       runningMax += max;
       return {
@@ -80,7 +80,9 @@ export default function TimelineSection({
     for (let mIdx = 0; mIdx < allocations.length; mIdx++) {
       let capacity = Math.max(
         0,
-        Math.round(totalHoursMin * (schedule.repartition[mIdx]?.percent ?? 0)),
+        Math.round(
+          totalHoursMin * ((schedule.repartition[mIdx]?.percent ?? 0) / 100),
+        ),
       );
       while (capacity > 0 && stepIdx < stepsQueue.length) {
         const cur = stepsQueue[stepIdx];
@@ -143,7 +145,7 @@ export default function TimelineSection({
           Calendrier et coûts
         </h2>
         <div className="inline-flex rounded-md shadow-sm overflow-hidden border">
-          {schedules.map((_, idx) => (
+          {schedules.map((opt, idx) => (
             <button
               key={idx}
               onClick={() => setVariant(idx)}
@@ -154,7 +156,7 @@ export default function TimelineSection({
               } ${idx === 0 ? "" : "border-l"}`}
               aria-pressed={variant === idx}
             >
-              {schedule.duration} mois
+              {opt.duration} mois
             </button>
           ))}
         </div>
