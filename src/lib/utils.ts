@@ -88,13 +88,17 @@ export const supabaseEstimateToEstimate = (
     }));
   };
 
+  const schedule = estimate.schedule.map((s) => ({
+    duration: s.duration,
+    repartition: s.repartition,
+  }));
+
   return {
     id: estimate.id,
     name: estimate.name,
     primaryColor: estimate.primary_color,
     secondaryColor: estimate.secondary_color,
     hourlyRate: estimate.hourly_rate,
-    duration: estimate.duration,
     signLink: estimate.sign_link || undefined,
     hourMaxMultiplier: estimate.hours_max_multiplier || 1,
     steps: mainSteps.map((s: SupabaseStep) => ({
@@ -105,8 +109,9 @@ export const supabaseEstimateToEstimate = (
       hours: s.hours || 0,
       color: s.color,
       disableRate: s.disable_max_multiplier || false,
+      notes: s.notes || undefined,
       subSteps: mapSubSteps(s.id),
     })),
-    schedule: estimate.schedule,
+    schedule: schedule,
   };
 };

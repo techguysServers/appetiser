@@ -79,7 +79,7 @@ export default function EstimateCard({
 
         <div className="flex gap-2">
           <Button asChild className="flex-1">
-            <Link href={`/${estimate.id}`}>View</Link>
+            <Link href={`/e/${estimate.id}`}>View</Link>
           </Button>
           <ShareDialog name={estimate.name} id={estimate.id!}>
             <Button variant={"outline"} size={"icon"}>

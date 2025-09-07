@@ -1,3 +1,17 @@
+export type OverviewFeature = {
+  label: string;
+  icon: "Brain" | "Users" | "Trophy" | "TrendingUp" | "ArrowRight";
+  color: string; // hex color like #0EA5E9
+};
+
+export type OfferConfig = {
+  id: string;
+  name: string;
+  conceptSummary: { name: string; description: string };
+  steps: Step[];
+  overviewFeatures: OverviewFeature[];
+};
+
 export type ProjectMonth = {
   name: string;
   percent: number; // 0..1 portion of the total budget

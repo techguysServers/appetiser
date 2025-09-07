@@ -2,21 +2,23 @@
 
 import { Fragment } from "react";
 import {
-  BarChart,
-  Bar,
-  XAxis,
-  YAxis,
-  CartesianGrid,
-  Tooltip,
-  Legend,
-  ResponsiveContainer,
+  RadarChart,
+  Radar,
+  PolarAngleAxis,
+  PolarGrid,
+  PieChart,
+  Pie,
 } from "recharts";
 import { ChevronDown, ChevronRight } from "lucide-react";
+import { getComplexityInfo, truncateLabel } from "@/lib/utils";
 import {
-  convertComplexityToLabel,
-  getComplexityInfo,
-  truncateLabel,
-} from "@/lib/utils";
+  ChartContainer,
+  ChartTooltip,
+  ChartTooltipContent,
+  ChartLegend,
+  ChartLegendContent,
+} from "@/components/ui/chart";
+import type { ChartConfig } from "@/components/ui/chart";
 import { Complexity, Step } from "@/schemas/step";
 
 type PhasesSectionProps = {
@@ -36,6 +38,12 @@ export default function PhasesSection({
   expandedSteps,
   toggleStep,
 }: PhasesSectionProps) {
+  const hoursChartConfig = {
+    hoursMin: { label: "Heures min", color: "oklch(43.2% 0.095 166.913)" },
+    hoursMax: { label: "Heures max", color: "oklch(43.2% 0.095 166.913)" },
+  } satisfies ChartConfig;
+  const pieOpacities = [1, 0.85, 0.7, 0.55, 0.4, 0.3, 0.2];
+
   return (
     <div className="space-y-8 transition-all duration-300 ease-out animate-in fade-in slide-in-from-bottom-2">
       <div className="bg-white rounded-lg shadow-lg p-6">
@@ -74,12 +82,12 @@ export default function PhasesSection({
                         if (phase.subSteps) toggleStep(phase.id);
                       }
                     }}
-                    aria-expanded={!!expandedSteps[phase.id || ""]}
+                    aria-expanded={!!expandedSteps[phase.id ?? ""]}
                   >
                     <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
                       <span className="inline-flex items-center gap-2">
                         {phase.subSteps ? (
-                          expandedSteps[phase.id || ""] ? (
+                          expandedSteps[phase.id ?? ""] ? (
                             <ChevronDown className="w-4 h-4 text-gray-500" />
                           ) : (
                             <ChevronRight className="w-4 h-4 text-gray-500" />
@@ -124,7 +132,7 @@ export default function PhasesSection({
                       })()}
                     </td>
                   </tr>
-                  {expandedSteps[phase.id || ""] && phase.subSteps && (
+                  {expandedSteps[phase.id ?? ""] && phase.subSteps && (
                     <tr className="bg-gray-50">
                       <td colSpan={4} className="px-6 pb-6">
                         <div className="mt-2 rounded-md border border-gray-200 bg-white">
@@ -152,7 +160,7 @@ export default function PhasesSection({
                                 </tr>
                               </thead>
                               <tbody>
-                                {phase.subSteps.map((s: Step, i: number) => (
+                                {phase.subSteps.map((s, i) => (
                                   <tr key={i} className="border-t text-sm">
                                     <td className="px-4 py-2 font-medium text-gray-900">
                                       {s.name}
@@ -170,7 +178,7 @@ export default function PhasesSection({
                                               : "bg-green-100 text-green-800"
                                         }`}
                                       >
-                                        {convertComplexityToLabel(s.complexity)}
+                                        {s.complexity}
                                       </span>
                                     </td>
                                     <td className="px-4 py-2 text-gray-600">
@@ -182,6 +190,21 @@ export default function PhasesSection({
                             </table>
                           </div>
                         </div>
+                        {phase.notes && phase.notes.length > 0 && (
+                          <div className="mt-4 rounded-md border border-gray-200 bg-white">
+                            <div className="px-4 py-3 border-b bg-gray-50 rounded-t-md">
+                              <h4 className="text-sm font-semibold text-gray-800">
+                                Intégrations & Enjeux
+                              </h4>
+                            </div>
+                            {/*<ul className="px-6 py-4 list-disc text-sm text-gray-700 space-y-1">
+                                {phase.notes.map((note, i) => (
+                                  <li key={i}>{note}</li>
+                                ))}
+                              </ul>*/}
+                            {phase.notes}
+                          </div>
+                        )}
                       </td>
                     </tr>
                   )}
@@ -197,46 +220,65 @@ export default function PhasesSection({
           <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
             Répartition de la durée par étape (heures)
           </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={computedSteps}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="name"
-                angle={-45}
-                textAnchor="end"
-                height={100}
-                tickFormatter={(value) => truncateLabel(value)}
+          <ChartContainer
+            config={hoursChartConfig}
+            className="mx-auto aspect-square max-h-[300px]"
+          >
+            <RadarChart
+              data={computedSteps.map((s) => ({
+                name: truncateLabel(s.name, 14),
+                hoursMin: s.hoursMin,
+                hoursMax: s.hoursMax,
+              }))}
+            >
+              <ChartTooltip cursor={false} content={<ChartTooltipContent />} />
+              <PolarAngleAxis dataKey="name" tick={{ fontSize: 10 }} />
+              <PolarGrid />
+              <Radar
+                dataKey="hoursMin"
+                fill="var(--color-hoursMin)"
+                fillOpacity={0.6}
+                dot={{ r: 3, fillOpacity: 1 }}
               />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="hoursMin" name="Heures min" fill="#93C5FD" />
-              <Bar dataKey="hoursMax" name="Heures max" fill="#3B82F6" />
-            </BarChart>
-          </ResponsiveContainer>
+              <Radar
+                dataKey="hoursMax"
+                fill="var(--color-hoursMax)"
+                fillOpacity={0.4}
+                dot={{ r: 3, fillOpacity: 1 }}
+              />
+              <ChartLegend
+                verticalAlign="top"
+                content={<ChartLegendContent payload={[]} />}
+              />
+            </RadarChart>
+          </ChartContainer>
         </div>
 
         <div className="bg-white rounded-lg shadow-lg p-6">
           <h3 className="text-lg md:text-xl font-bold text-gray-900 mb-4">
             Répartition des coûts par étape
           </h3>
-          <ResponsiveContainer width="100%" height={300}>
-            <BarChart data={computedSteps}>
-              <CartesianGrid strokeDasharray="3 3" />
-              <XAxis
-                dataKey="name"
-                angle={-45}
-                textAnchor="end"
-                height={100}
-                tickFormatter={(value) => truncateLabel(value)}
+          <ChartContainer
+            config={{ cost: { label: "Coût" } }}
+            className="mx-auto aspect-square max-h-[300px]"
+          >
+            <PieChart>
+              <ChartTooltip
+                cursor={false}
+                content={<ChartTooltipContent hideLabel />}
               />
-              <YAxis />
-              <Tooltip />
-              <Legend />
-              <Bar dataKey="costMin" name="Coût min" fill="#86EFAC" />
-              <Bar dataKey="costMax" name="Coût max" fill="#10B981" />
-            </BarChart>
-          </ResponsiveContainer>
+              <Pie
+                data={computedSteps.map((s, i) => ({
+                  name: truncateLabel(s.name, 16),
+                  value: s.costMax,
+                  fill: `oklch(43.2% 0.095 166.913 / ${pieOpacities[i % pieOpacities.length]})`,
+                }))}
+                dataKey="value"
+                nameKey="name"
+                stroke="hsl(var(--border))"
+              />
+            </PieChart>
+          </ChartContainer>
         </div>
       </div>
     </div>

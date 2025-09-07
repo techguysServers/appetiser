@@ -12,6 +12,8 @@ export type Step = {
   description?: string;
   hours: number;
   disableRate: boolean;
+  isAdditional: boolean;
+  notes?: string;
   complexity: Complexity;
   color: string;
   subSteps?: Step[];
@@ -24,6 +26,8 @@ export type SupabaseStep = {
   complexity: number;
   color: string;
   disable_max_multiplier?: boolean;
+  is_additional: boolean;
+  notes?: string;
   hours?: number;
   parent_id: string | null;
   estimate_id: string;
@@ -36,6 +40,8 @@ export const CreateStepSchema: z.ZodType<Step> = z.object({
   order: z.number().min(0, "Order must be a non-negative integer").default(0),
   hours: z.number().min(0, "Hours must be a non-negative number").default(0),
   disableRate: z.boolean().default(false),
+  isAdditional: z.boolean().default(false),
+  notes: z.string().optional(),
   complexity: z.enum(Complexity).default(Complexity.LOW),
   color: z.string().default("#000000"),
   subSteps: z.array(z.lazy(() => CreateStepSchema)).default([]),

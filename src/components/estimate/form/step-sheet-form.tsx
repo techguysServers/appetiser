@@ -1,5 +1,6 @@
 import { Button } from "@/components/ui/button";
 import {
+  Form,
   FormControl,
   FormDescription,
   FormField,
@@ -66,6 +67,8 @@ export default function StepSheetForm({
       color: "#000000",
       order: currentSubSteps.length,
       disableRate: false,
+      isAdditional: false,
+      notes: "",
       subSteps: [],
     };
 
@@ -181,24 +184,68 @@ export default function StepSheetForm({
               )}
             />
 
+            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 items-start">
+              <FormField
+                control={form.control}
+                name={`steps.${index}.disableRate`}
+                render={({ field }) => (
+                  <FormItem>
+                    <Label className="font-medium">Disable rate</Label>
+                    <div className="flex items-center space-x-2">
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        When enabled, the hourly rate will not be applied to
+                        this step.
+                      </FormDescription>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+
+              <FormField
+                control={form.control}
+                name={`steps.${index}.isAdditional`}
+                render={({ field }) => (
+                  <FormItem>
+                    <Label className="font-medium">Mark as additional</Label>
+                    <div className="flex items-center space-x-2">
+                      <FormControl>
+                        <Switch
+                          checked={field.value}
+                          onCheckedChange={field.onChange}
+                        />
+                      </FormControl>
+                      <FormDescription>
+                        Consider as an additional feature and list it separately
+                        in the estimate.
+                      </FormDescription>
+                    </div>
+                    <FormMessage />
+                  </FormItem>
+                )}
+              />
+            </div>
+
             <FormField
               control={form.control}
-              name={`steps.${index}.disableRate`}
+              name={`steps.${index}.notes`}
               render={({ field }) => (
                 <FormItem>
-                  <Label className="font-medium">Disable rate</Label>
-                  <div className="flex items-center space-x-2">
-                    <FormControl>
-                      <Switch
-                        checked={field.value}
-                        onCheckedChange={field.onChange}
-                      />
-                    </FormControl>
-                    <FormDescription>
-                      When enabled, the hourly rate will not be applied to this
-                      step.
-                    </FormDescription>
-                  </div>
+                  <Label>Notes</Label>
+                  <FormControl>
+                    <Textarea
+                      rows={3}
+                      placeholder="Additional notes for this step"
+                      {...field}
+                      value={field.value || ""}
+                    />
+                  </FormControl>
                   <FormMessage />
                 </FormItem>
               )}

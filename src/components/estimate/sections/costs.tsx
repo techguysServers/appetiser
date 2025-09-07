@@ -13,8 +13,8 @@ import {
   Pie,
   Cell,
 } from "recharts";
-import type { Step } from "@/config";
 import { truncateLabel } from "@/lib/utils";
+import { Step } from "@/schemas/step";
 
 type CostsSectionProps = {
   computedSteps: (Step & {
@@ -95,8 +95,9 @@ export default function CostsSection({ computedSteps }: CostsSectionProps) {
                     <p className="font-medium text-gray-900">{item.name}</p>
                   </div>
                   <p className="text-lg md:text-end font-bold text-gray-900">
-                    ${item.costMin.toLocaleString()} - $
-                    {item.costMax.toLocaleString()}
+                    {item.disableRate
+                      ? `$${item.costMin.toLocaleString()}`
+                      : `$${item.costMin.toLocaleString()} - $${item.costMax.toLocaleString()}`}
                   </p>
                 </div>
               ))}

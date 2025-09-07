@@ -23,10 +23,6 @@ export const CreateEstimateSchema = z.object({
     .number()
     .min(0, "Hourly rate must be a non-negative number")
     .default(135),
-  duration: z
-    .number()
-    .min(1, "Duration must be a non-negative number")
-    .default(1),
   signLink: z.url().optional(),
   hourMaxMultiplier: z.number().min(1).default(1.2),
   steps: z.array(z.lazy(() => CreateStepSchema)).default([]),

@@ -31,7 +31,6 @@ export function EstimateFormProvider({
         primaryColor: "#000000",
         secondaryColor: "#FFFFFF",
         hourlyRate: 135,
-        duration: 1,
         signLink: "",
         hourMaxMultiplier: 1.2,
         steps: [
@@ -52,7 +51,7 @@ export function EstimateFormProvider({
             ],
           },
         ],
-        schedule: [{ month: 1, percent: 100 }],
+        schedule: [{ duration: 1, repartition: [{ month: 1, percent: 100 }] }],
       };
 
   const form = useForm<z.infer<typeof CreateEstimateSchema>>({
@@ -79,7 +78,6 @@ export function EstimateFormProvider({
         primary_color: data.primaryColor,
         secondary_color: data.secondaryColor,
         hourly_rate: data.hourlyRate,
-        duration: data.duration,
         sign_link: data.signLink,
         hours_max_multiplier: data.hourMaxMultiplier,
         user_id: user.sub,
@@ -109,6 +107,7 @@ export function EstimateFormProvider({
         complexity: step.complexity,
         color: step.color,
         disable_max_multiplier: step.disableRate || false,
+        is_additional: step.isAdditional || false,
         hours: step.hours || 0,
         parent_id: null,
         estimate_id: estimateId,
@@ -122,6 +121,7 @@ export function EstimateFormProvider({
         complexity: subStep.complexity,
         color: subStep.color,
         disable_max_multiplier: subStep.disableRate || false,
+        is_additional: subStep.isAdditional || false,
         hours: subStep.hours || 0,
         parent_id: parentStepId,
         estimate_id: estimateId,
@@ -142,8 +142,8 @@ export function EstimateFormProvider({
     // Insert payment schedule
     const paymentSchedule = data.schedule.map((item) => ({
       estimate_id: estimateId,
-      month: item.month,
-      percent: item.percent,
+      duration: item.duration,
+      repartition: item.repartition,
       user_id: user.sub,
     }));
 
@@ -153,23 +153,6 @@ export function EstimateFormProvider({
       .eq("estimate_id", estimateId);
     await supabaseClient.from("schedule").insert(paymentSchedule);
   };
-
-  useEffect(() => {
-    const subscription = form.watch((value, { name }) => {
-      if (name === "duration") {
-        const schedule = Array.from(
-          { length: value?.duration ?? 0 },
-          (_, i) => ({
-            month: i + 1,
-            percent: 100 / (value?.duration ?? 1),
-          }),
-        );
-
-        form.setValue("schedule", schedule);
-      }
-    });
-    return () => subscription.unsubscribe();
-  }, [form]);
 
   return (
     <EstimateFormContext.Provider
