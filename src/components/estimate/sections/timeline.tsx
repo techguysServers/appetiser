@@ -57,7 +57,7 @@ export default function TimelineSection({
       runningMin += min;
       runningMax += max;
       return {
-        month: `${m.month} mois`,
+        month: `Mois ${m.month}`,
         min,
         max,
         cumMin: runningMin,
@@ -81,8 +81,8 @@ export default function TimelineSection({
       let capacity = Math.max(
         0,
         Math.round(
-          totalHoursMin * ((schedule.repartition[mIdx]?.percent ?? 0) / 100),
-        ),
+          totalHoursMin * ((schedule.repartition[mIdx]?.percent ?? 0) / 100)
+        )
       );
       while (capacity > 0 && stepIdx < stepsQueue.length) {
         const cur = stepsQueue[stepIdx];
