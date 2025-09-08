@@ -103,12 +103,12 @@ export const ColorPicker = ({
 
   useEffect(() => {
     if (onChangeRef.current) {
-      const color = Color.hsl(hue, saturation, lightness).alpha(alpha / 100);
-      const rgba = color.rgb().array();
+      const color = Color.hsl(hue, saturation, lightness);
+      const rgb = color.rgb().array();
 
-      onChangeRef.current([rgba[0], rgba[1], rgba[2], alpha / 100]);
+      onChangeRef.current([rgb[0], rgb[1], rgb[2]]);
     }
-  }, [hue, saturation, lightness, alpha]);
+  }, [hue, saturation, lightness]);
 
   return (
     <ColorPickerContext.Provider
@@ -325,7 +325,10 @@ export const ColorPickerOutput = ({
 
   return (
     <Select onValueChange={setMode} value={mode}>
-      <SelectTrigger className="h-8 w-20 shrink-0 text-xs" {...props}>
+      <SelectTrigger
+        className={cn("h-8 w-20 shrink-0 text-xs", className)}
+        {...props}
+      >
         <SelectValue placeholder="Mode" />
       </SelectTrigger>
       <SelectContent>
@@ -339,26 +342,7 @@ export const ColorPickerOutput = ({
   );
 };
 
-type PercentageInputProps = ComponentProps<typeof Input>;
-
-const PercentageInput = ({ className, ...props }: PercentageInputProps) => {
-  return (
-    <div className="relative">
-      <Input
-        readOnly
-        type="text"
-        {...props}
-        className={cn(
-          "h-8 w-[3.25rem] rounded-l-none bg-secondary px-2 text-xs shadow-none",
-          className
-        )}
-      />
-      <span className="-translate-y-1/2 absolute top-1/2 right-2 text-muted-foreground text-xs">
-        %
-      </span>
-    </div>
-  );
-};
+// Alpha percentage input removed (no alpha handling)
 
 export type ColorPickerFormatProps = HTMLAttributes<HTMLDivElement>;
 
@@ -366,12 +350,28 @@ export const ColorPickerFormat = ({
   className,
   ...props
 }: ColorPickerFormatProps) => {
-  const { hue, saturation, lightness, alpha, mode } = useColorPicker();
-  const color = Color.hsl(hue, saturation, lightness, alpha / 100);
+  const {
+    hue,
+    saturation,
+    lightness,
+    mode,
+    setHue,
+    setSaturation,
+    setLightness,
+  } = useColorPicker();
+  const color = Color.hsl(hue, saturation, lightness);
+  const [hexValue, setHexValue] = useState(color.hex());
+  const [isEditingHex, setIsEditingHex] = useState(false);
+
+  useEffect(() => {
+    if (isEditingHex) return;
+    const next = Color.hsl(hue, saturation, lightness).hex();
+    if (next.toLowerCase() !== hexValue.toLowerCase()) {
+      setHexValue(next);
+    }
+  }, [hue, saturation, lightness, isEditingHex, hexValue]);
 
   if (mode === "hex") {
-    const hex = color.hex();
-
     return (
       <div
         className={cn(
@@ -381,12 +381,38 @@ export const ColorPickerFormat = ({
         {...props}
       >
         <Input
-          className="h-8 bg-secondary px-2 text-xs shadow-none"
-          readOnly
+          className="h-8  bg-secondary px-2 text-xs shadow-none"
           type="text"
-          value={hex}
+          value={hexValue}
+          onFocus={() => setIsEditingHex(true)}
+          onChange={(e) => {
+            const next = e.target.value;
+            setHexValue(next);
+
+            const isHex =
+              /^#([0-9A-Fa-f]{3}|[0-9A-Fa-f]{6}|[0-9A-Fa-f]{8})$/.test(next);
+            if (isHex) {
+              try {
+                const parsed = Color(next);
+                const [h, s, l] = parsed.hsl().array();
+                setHue(typeof h === "number" ? h : 0);
+                setSaturation(typeof s === "number" ? s : 0);
+                setLightness(typeof l === "number" ? l : 0);
+              } catch {
+                // ignore while typing invalid values
+              }
+            }
+          }}
+          onBlur={() => {
+            setIsEditingHex(false);
+            try {
+              const normalized = Color(hexValue).hex();
+              setHexValue(normalized);
+            } catch {
+              setHexValue(color.hex());
+            }
+          }}
         />
-        {/* <PercentageInput value={alpha} /> */}
       </div>
     );
   }
@@ -408,7 +434,7 @@ export const ColorPickerFormat = ({
         {rgb.map((value, index) => (
           <Input
             className={cn(
-              "h-8 bg-secondary px-2 text-xs shadow-none",
+              "h-8  bg-secondary px-2 text-xs shadow-none",
               index && "rounded-l-none",
               className
             )}
@@ -418,7 +444,7 @@ export const ColorPickerFormat = ({
             value={value}
           />
         ))}
-        {/* <PercentageInput value={alpha} /> */}
+        {/* no alpha */}
       </div>
     );
   }
@@ -435,7 +461,7 @@ export const ColorPickerFormat = ({
           className="h-8 w-full bg-secondary px-2 text-xs shadow-none"
           readOnly
           type="text"
-          value={`rgba(${rgb.join(", ")}, ${alpha}%)`}
+          value={`rgb(${rgb.join(", ")})`}
           {...props}
         />
       </div>
@@ -459,7 +485,7 @@ export const ColorPickerFormat = ({
         {hsl.map((value, index) => (
           <Input
             className={cn(
-              "h-8 bg-secondary px-2 text-xs shadow-none",
+              "h-8  bg-secondary px-2 text-xs shadow-none",
               index && "rounded-l-none",
               className
             )}
@@ -469,7 +495,7 @@ export const ColorPickerFormat = ({
             value={value}
           />
         ))}
-        {/* <PercentageInput value={alpha} /> */}
+        {/* no alpha */}
       </div>
     );
   }

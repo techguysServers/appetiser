@@ -10,7 +10,11 @@ import {
   Pie,
 } from "recharts";
 import { ChevronDown, ChevronRight } from "lucide-react";
-import { getComplexityInfo, truncateLabel } from "@/lib/utils";
+import {
+  convertComplexityToLabel,
+  getComplexityInfo,
+  truncateLabel,
+} from "@/lib/utils";
 import {
   ChartContainer,
   ChartTooltip,
@@ -111,7 +115,7 @@ export default function PhasesSection({
                         const info = getComplexityInfo(phase.complexity);
                         const percent = Math.min(
                           100,
-                          Math.max(0, Math.round((phase.complexity / 6) * 100)),
+                          Math.max(0, Math.round((phase.complexity / 6) * 100))
                         );
                         return (
                           <div className="min-w-[100px]">
@@ -174,11 +178,11 @@ export default function PhasesSection({
                                           s.complexity === Complexity.HIGH
                                             ? "bg-red-100 text-red-800"
                                             : s.complexity === Complexity.MEDIUM
-                                              ? "bg-yellow-100 text-yellow-800"
-                                              : "bg-green-100 text-green-800"
+                                            ? "bg-yellow-100 text-yellow-800"
+                                            : "bg-green-100 text-green-800"
                                         }`}
                                       >
-                                        {s.complexity}
+                                        {convertComplexityToLabel(s.complexity)}
                                       </span>
                                     </td>
                                     <td className="px-4 py-2 text-gray-600">
@@ -271,7 +275,9 @@ export default function PhasesSection({
                 data={computedSteps.map((s, i) => ({
                   name: truncateLabel(s.name, 16),
                   value: s.costMax,
-                  fill: `oklch(43.2% 0.095 166.913 / ${pieOpacities[i % pieOpacities.length]})`,
+                  fill: `oklch(43.2% 0.095 166.913 / ${
+                    pieOpacities[i % pieOpacities.length]
+                  })`,
                 }))}
                 dataKey="value"
                 nameKey="name"

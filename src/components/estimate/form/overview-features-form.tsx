@@ -62,7 +62,7 @@ export default function OverviewFeaturesForm() {
           Add Feature
         </Button>
       </CardHeader>
-      <CardContent>
+      <CardContent className="space-y-2">
         {fields.length === 0 && (
           <p className="text-sm text-muted-foreground text-center">
             No features added yet. Click &quot;Add Feature&quot; to create your
