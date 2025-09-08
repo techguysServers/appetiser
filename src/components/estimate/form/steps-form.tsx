@@ -34,6 +34,7 @@ export default function NewEstimateSteps() {
       hours: 0,
       color: "#000000",
       disableRate: false,
+      isAdditional: false,
       subSteps: [],
     });
     setEditingStepIndex(steps.length);

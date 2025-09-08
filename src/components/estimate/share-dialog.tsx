@@ -47,7 +47,7 @@ export default function ShareDialog({
       .from("estimates_tokens")
       .upsert(
         { estimate_id: id, user_id: user.data.user.id },
-        { onConflict: "estimate_id" },
+        { onConflict: "estimate_id" }
       )
       .select("*")
       .single();
@@ -80,7 +80,7 @@ export default function ShareDialog({
       }
       if (data) {
         setLink(
-          `${process.env.NEXT_PUBLIC_APP_URL}/e/${id}?token=${data.token}`,
+          `${process.env.NEXT_PUBLIC_APP_URL}/e/${id}?token=${data.token}`
         );
       }
     };
@@ -123,7 +123,7 @@ export default function ShareDialog({
             </Button>
           ) : (
             <Tooltip>
-              <TooltipTrigger>
+              <TooltipTrigger asChild>
                 <Button
                   variant={"outline"}
                   size={"icon"}
