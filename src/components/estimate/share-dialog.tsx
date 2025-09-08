@@ -47,7 +47,7 @@ export default function ShareDialog({
       .from("estimates_tokens")
       .upsert(
         { estimate_id: id, user_id: user.data.user.id },
-        { onConflict: "estimate_id" }
+        { onConflict: "estimate_id" },
       )
       .select("*")
       .single();
@@ -80,7 +80,7 @@ export default function ShareDialog({
       }
       if (data) {
         setLink(
-          `${process.env.NEXT_PUBLIC_APP_URL}/e/${id}?token=${data.token}`
+          `${process.env.NEXT_PUBLIC_APP_URL}/e/${id}?token=${data.token}`,
         );
       }
     };
@@ -139,9 +139,10 @@ export default function ShareDialog({
         </div>
         {hasSignLink && (
           <p className="text-sm text-muted-foreground mt-2">
-            <CircleAlert /> Be careful with this link, we detected a signing
-            link associated with this estimage. Anyone with this link will be
-            able to sign the estimate. Share it only with trusted parties.
+            <CircleAlert className="inline size-4" /> Be careful with this link,
+            we detected a signing link associated with this estimage. Anyone
+            with this link will be able to sign the estimate. Share it only with
+            trusted parties.
           </p>
         )}
       </DialogContent>

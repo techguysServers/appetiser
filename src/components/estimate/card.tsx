@@ -81,7 +81,11 @@ export default function EstimateCard({
           <Button asChild className="flex-1">
             <Link href={`/e/${estimate.id}`}>View</Link>
           </Button>
-          <ShareDialog name={estimate.name} id={estimate.id!}>
+          <ShareDialog
+            name={estimate.name}
+            id={estimate.id!}
+            hasSignLink={estimate.signLink !== undefined}
+          >
             <Button variant={"outline"} size={"icon"}>
               <ExternalLink />
             </Button>
