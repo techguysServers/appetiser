@@ -5,6 +5,12 @@ import Link from "next/link";
 import EstimateCard from "@/components/estimate/card";
 import { supabaseEstimateToEstimate } from "@/lib/utils";
 
+export const generateMetadata = async () => {
+  return {
+    title: "Appetiser - Estimates",
+  };
+};
+
 export default async function ProtectedPage() {
   const supabase = await createClient();
 

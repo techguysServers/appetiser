@@ -3,6 +3,17 @@ import { EstimateFormProvider } from "@/context/estimate-form-context";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseEstimateToEstimate } from "@/lib/utils";
 
+export const generateMetadata = async ({
+  params,
+}: {
+  params: Promise<{ id: string }>;
+}) => {
+  const estimateId = (await params).id;
+  return {
+    title: `Appetiser - Edit ${estimateId}`,
+  };
+};
+
 export default async function EditEstimatePage({
   params,
 }: {
