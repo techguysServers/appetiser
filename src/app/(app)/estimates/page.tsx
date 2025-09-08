@@ -15,7 +15,7 @@ export default async function ProtectedPage() {
 
   const estimateWithSteps = supabase
     .from("estimates")
-    .select(`*, steps (*), schedule (*)`);
+    .select(`*, features (*), steps (*), schedule (*)`);
   const { data: estimates } = await estimateWithSteps;
 
   return (

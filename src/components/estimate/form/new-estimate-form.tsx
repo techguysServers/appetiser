@@ -7,6 +7,7 @@ import NewEstimateSteps from "./steps-form";
 import { useEsimateForm } from "@/context/estimate-form-context";
 import { Loader2 } from "lucide-react";
 import NewEstimateScheduleForm from "./schedule-form";
+import NewEstimateFeatures from "./overview-features-form";
 
 export default function NewEstimateForm() {
   const { form, submitForm } = useEsimateForm();
@@ -18,6 +19,8 @@ export default function NewEstimateForm() {
         className="relative space-y-8"
       >
         <NewEstimateGeneralInformations />
+
+        <NewEstimateFeatures />
 
         <NewEstimateSteps />
 

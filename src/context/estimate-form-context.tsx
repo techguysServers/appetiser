@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import z from "zod";
 import { v4 as uuidv4 } from "uuid";
 import { Complexity, SupabaseStep } from "@/schemas/step";
+import { SupabaseFeature } from "@/schemas/features";
 
 interface EstimateFormContextType {
   form: ReturnType<typeof useForm<z.infer<typeof CreateEstimateSchema>>>;
@@ -14,7 +15,7 @@ interface EstimateFormContextType {
 }
 
 const EstimateFormContext = createContext<EstimateFormContextType | undefined>(
-  undefined,
+  undefined
 );
 
 export function EstimateFormProvider({
@@ -89,6 +90,23 @@ export function EstimateFormProvider({
       console.error("Estimate ID not found after insertion");
       return;
     }
+
+    const formattedFeatures: SupabaseFeature[] = data.features.map(
+      (feature) => ({
+        id: uuidv4(),
+        label: feature.label,
+        icon: feature.icon,
+        color: feature.color,
+        user_id: user.sub,
+        estimate_id: estimateId,
+      })
+    );
+
+    await supabaseClient
+      .from("features")
+      .delete()
+      .eq("estimate_id", estimateId);
+    await supabaseClient.from("features").insert(formattedFeatures);
 
     const formattedSteps: {
       mainSteps: SupabaseStep[];

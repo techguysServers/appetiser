@@ -9,7 +9,7 @@ import {
   ListPlus,
   UsersRound,
 } from "lucide-react";
-import { TIMELINE_DATA, PROJECT_SCHEDULE, OverviewFeature } from "@/config";
+import { Feature } from "@/schemas/features";
 import { getStepComplexity, getStepHoursMin } from "@/lib/utils";
 import OverviewSection from "@/components/estimate/sections/overview";
 import PhasesSection from "@/components/estimate/sections/phases";
@@ -23,7 +23,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
   const [activeSection, setActiveSection] = useState("overview");
   // Single offer configuration
   const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>(
-    {},
+    {}
   );
   const [expandedOptions, setExpandedOptions] = useState<
     Record<string, boolean>
@@ -35,7 +35,10 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
     visible: boolean;
   }>({ left: 0, width: 0, visible: false });
 
-  const selectedFeatures: OverviewFeature[] = []; //estimate.overviewFeatures;
+  const selectedFeatures: Feature[] = useMemo(
+    () => estimate.features,
+    [estimate]
+  ); //estimate.overviewFeatures;
   const selectedConceptSummary = { name: "name", description: "description" }; //estimate.conceptSummary;
 
   const toggleStep = (id?: string) => {
@@ -54,7 +57,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
       const container = tabsContainerRef.current;
       if (!container) return;
       const tabEl = container.querySelector(
-        `[data-section-id="${activeSection}"]`,
+        `[data-section-id="${activeSection}"]`
       ) as HTMLElement | null;
       if (!tabEl) return;
       const left = tabEl.offsetLeft - container.scrollLeft;
@@ -123,7 +126,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
       { id: "timeline", name: "Calendrier", icon: Clock },
       { id: "costs", name: "Analyse des coûts", icon: DollarSign },
     ],
-    [],
+    []
   );
 
   return (

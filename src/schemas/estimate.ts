@@ -1,6 +1,7 @@
 import z from "zod";
 import { CreateStepSchema } from "./step";
 import { CreateScheduleSchema } from "./schedule";
+import { CreateFeatureSchema } from "./features";
 
 export type SupabaseEstimate = {
   id: string;
@@ -25,6 +26,7 @@ export const CreateEstimateSchema = z.object({
     .default(135),
   signLink: z.url().optional(),
   hourMaxMultiplier: z.number().min(1).default(1.2),
+  features: z.array(z.lazy(() => CreateFeatureSchema)).default([]),
   steps: z.array(z.lazy(() => CreateStepSchema)).default([]),
   schedule: CreateScheduleSchema.default([]),
 });

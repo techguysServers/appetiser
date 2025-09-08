@@ -1,3 +1,6 @@
+import { Brain, Users, Trophy, TrendingUp, ArrowUp } from "lucide-react";
+import { Step } from "./schemas/step";
+
 export type OverviewFeature = {
   label: string;
   icon: "Brain" | "Users" | "Trophy" | "TrendingUp" | "ArrowRight";
@@ -15,6 +18,14 @@ export type OfferConfig = {
 export type ProjectMonth = {
   name: string;
   percent: number; // 0..1 portion of the total budget
+};
+
+export const ICONS = {
+  brain: Brain,
+  users: Users,
+  trophy: Trophy,
+  "trending-up": TrendingUp,
+  "arrow-right": ArrowUp,
 };
 
 // Configure project duration and monthly budget allocation

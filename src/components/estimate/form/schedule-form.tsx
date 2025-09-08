@@ -50,6 +50,7 @@ export default function NewEstimateScheduleForm() {
           </CardDescription>
         </div>
         <Button
+          variant={"outline"}
           type="button"
           onClick={() => {
             append({
@@ -100,7 +101,7 @@ export default function NewEstimateScheduleForm() {
                                 return;
                               }
                               const currentRepartition = form.getValues(
-                                `schedule.${variantIndex}.repartition`,
+                                `schedule.${variantIndex}.repartition`
                               );
                               let repartition = currentRepartition;
                               if (duration > currentRepartition.length) {
@@ -115,20 +116,20 @@ export default function NewEstimateScheduleForm() {
                                     (_, i) => ({
                                       month: currentRepartition.length + i + 1,
                                       percent: 0,
-                                    }),
+                                    })
                                   ),
                                 ];
                               } else if (duration < currentRepartition.length) {
                                 // Remove months
                                 repartition = currentRepartition.slice(
                                   0,
-                                  duration,
+                                  duration
                                 );
                               }
                               // Ensure total percent is 100
                               const totalPercent = repartition.reduce(
                                 (acc, r) => acc + r.percent,
-                                0,
+                                0
                               );
                               if (totalPercent !== 100) {
                                 const factor = 100 / totalPercent;
@@ -139,7 +140,7 @@ export default function NewEstimateScheduleForm() {
                                 // Adjust last month to ensure total is exactly 100
                                 const adjustedTotal = repartition.reduce(
                                   (acc, r) => acc + r.percent,
-                                  0,
+                                  0
                                 );
                                 const difference = 100 - adjustedTotal;
                                 repartition[repartition.length - 1].percent +=
@@ -194,8 +195,8 @@ export default function NewEstimateScheduleForm() {
                               field.onChange(
                                 Math.min(
                                   100,
-                                  Math.max(0, Number(e.target.value)),
-                                ),
+                                  Math.max(0, Number(e.target.value))
+                                )
                               )
                             }
                           />

@@ -32,7 +32,7 @@ export default async function EstimatePage({
   if (!supabaseEstimate) {
     const estimateWithSteps = supabase
       .from("estimates")
-      .select(`*, steps (*), schedule (*)`)
+      .select(`*, features (*), steps (*), schedule (*)`)
       .eq("id", estimateId)
       .single();
     const { data: estimate } = await estimateWithSteps;

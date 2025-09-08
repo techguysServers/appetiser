@@ -1,4 +1,5 @@
 import { Estimate, SupabaseEstimate } from "@/schemas/estimate";
+import { SupabaseFeature } from "@/schemas/features";
 import { SupabaseSchedule } from "@/schemas/schedule";
 import { Complexity, Step, SupabaseStep } from "@/schemas/step";
 import { clsx, type ClassValue } from "clsx";
@@ -64,17 +65,19 @@ export const convertComplexityToLabel = (complexity: Complexity) => {
 };
 
 export const supabaseEstimateToEstimate = (
-  estimate: SupabaseEstimate & { steps: SupabaseStep[] } & {
+  estimate: SupabaseEstimate & { features: SupabaseFeature[] } & {
+    steps: SupabaseStep[];
+  } & {
     schedule: SupabaseSchedule[];
-  },
+  }
 ): Estimate => {
   const mainSteps = estimate.steps.filter(
-    (s: SupabaseStep) => s.parent_id === null,
+    (s: SupabaseStep) => s.parent_id === null
   );
 
   const mapSubSteps = (parentId: string): Step[] => {
     const subSteps = estimate.steps.filter(
-      (s: SupabaseStep) => s.parent_id === parentId,
+      (s: SupabaseStep) => s.parent_id === parentId
     );
     return subSteps.map((s: SupabaseStep) => ({
       id: s.id,
@@ -103,6 +106,11 @@ export const supabaseEstimateToEstimate = (
     hourlyRate: estimate.hourly_rate,
     signLink: estimate.sign_link || undefined,
     hourMaxMultiplier: estimate.hours_max_multiplier || 1,
+    features: estimate.features.map((f) => ({
+      label: f.label,
+      icon: f.icon,
+      color: f.color,
+    })),
     steps: mainSteps.map((s: SupabaseStep) => ({
       id: s.id,
       name: s.name,

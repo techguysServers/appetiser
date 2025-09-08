@@ -13,7 +13,7 @@ export default async function EditEstimatePage({
 
   const estimateWithSteps = supabase
     .from("estimates")
-    .select(`*, steps (*), schedule (*)`)
+    .select(`*, features (*), steps (*), schedule (*)`)
     .eq("id", estimateId)
     .single();
   const { data: estimate, error } = await estimateWithSteps;

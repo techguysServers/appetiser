@@ -1,20 +1,12 @@
 "use client";
 
-import {
-  Brain,
-  Users,
-  Trophy,
-  Clock,
-  DollarSign,
-  Code,
-  TrendingUp,
-  ArrowRight,
-} from "lucide-react";
+import { Brain, Users, Clock, DollarSign, Code } from "lucide-react";
 import { OrbitingCircles } from "@/components/magicui/orbiting-circles";
 import Image from "next/image";
-import type { OverviewFeature } from "@/config";
+import { ICONS } from "@/config";
 import { NextLogo } from "@/components/next-logo";
 import MastraLogo from "@/components/mastra-logo";
+import { Feature } from "@/schemas/features";
 
 type OverviewSectionProps = {
   totalHoursMin: number;
@@ -22,7 +14,7 @@ type OverviewSectionProps = {
   totalCostMin: number;
   totalCostMax: number;
   stepsCount: number;
-  features: OverviewFeature[];
+  features: Feature[];
   conceptSummary: {
     name: string;
     description: string;
@@ -38,16 +30,6 @@ export default function OverviewSection({
   features,
   conceptSummary,
 }: OverviewSectionProps) {
-  const ICONS: Record<
-    OverviewFeature["icon"],
-    React.ComponentType<{ className?: string }>
-  > = {
-    Brain,
-    Users,
-    Trophy,
-    TrendingUp,
-    ArrowRight,
-  };
   return (
     <div className="space-y-8 transition-all duration-300 ease-out animate-in fade-in slide-in-from-bottom-2">
       <div className="bg-white rounded-lg shadow-lg p-6">
@@ -121,7 +103,7 @@ export default function OverviewSection({
           </h3>
           <div className="space-y-4">
             {features.map((f, idx) => {
-              const Icon = ICONS[f.icon];
+              const Icon = ICONS[f.icon as keyof typeof ICONS];
               return (
                 <div key={idx} className="flex items-center space-x-3">
                   <div
