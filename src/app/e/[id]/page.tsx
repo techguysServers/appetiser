@@ -19,8 +19,8 @@ export default async function EstimatePage({
   if (token) {
     const { data } = await supabase
       .rpc("get_estimate_by_token", {
-        eid: estimateId,
-        token: token,
+        p_eid: estimateId,
+        p_token: token,
       })
       .single();
 
