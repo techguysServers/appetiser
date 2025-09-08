@@ -18,6 +18,7 @@ import TimelineSection from "@/components/estimate/sections/timeline";
 import { SignButton } from "@/components/SignButton";
 import { Estimate } from "@/schemas/estimate";
 import OptionsSection from "./sections/options";
+import Color from "color";
 
 export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
   const [activeSection, setActiveSection] = useState("overview");
@@ -38,8 +39,14 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
   const selectedFeatures: Feature[] = useMemo(
     () => estimate.features,
     [estimate]
-  ); //estimate.overviewFeatures;
-  const selectedConceptSummary = { name: "name", description: "description" }; //estimate.conceptSummary;
+  );
+  const selectedConceptSummary = useMemo(
+    () => ({
+      name: estimate.name,
+      description: estimate.description,
+    }),
+    [estimate]
+  );
 
   const toggleStep = (id?: string) => {
     if (!id) return;
@@ -50,6 +57,15 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
     if (!id) return;
     setExpandedOptions((prev) => ({ ...prev, [id]: !prev[id] }));
   };
+
+  // Set primary color
+  useEffect(() => {
+    const color = Color(estimate.primaryColor);
+    document.documentElement.style.setProperty(
+      "--primary",
+      `rgba(${color.rgb().array().join(",")})`
+    );
+  }, [estimate]);
 
   // Animate thumb under active tab
   useEffect(() => {
@@ -130,7 +146,15 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
   );
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-primary/5 to-primary-light/10">
+    <div
+      className="min-h-screen"
+      style={{
+        background: `rgba(${Color(estimate.primaryColor)
+          .rgb()
+          .array()
+          .join(",")}, 0.05)`,
+      }}
+    >
       {/* Header */}
       <header className="bg-white shadow-lg border-b border-gray-200">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">

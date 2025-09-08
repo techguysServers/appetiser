@@ -6,6 +6,7 @@ import { CreateFeatureSchema } from "./features";
 export type SupabaseEstimate = {
   id: string;
   name: string;
+  description?: string;
   primary_color: string;
   hourly_rate: number;
   duration: number;
@@ -18,6 +19,7 @@ export type SupabaseEstimate = {
 
 export const CreateEstimateSchema = z.object({
   name: z.string({ message: "Name is required" }).min(1, "Name is required"),
+  description: z.string().optional(),
   primaryColor: z.string().default("#000000"),
   secondaryColor: z.string().default("#FFFFFF").optional(),
   hourlyRate: z

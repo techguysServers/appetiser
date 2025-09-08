@@ -101,6 +101,7 @@ export const supabaseEstimateToEstimate = (
   return {
     id: estimate.id,
     name: estimate.name,
+    description: estimate.description,
     primaryColor: estimate.primary_color,
     secondaryColor: estimate.secondary_color,
     hourlyRate: estimate.hourly_rate,

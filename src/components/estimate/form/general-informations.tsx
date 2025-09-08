@@ -27,6 +27,7 @@ import {
   ColorPickerOutput,
   ColorPickerSelection,
 } from "@/components/ui/shadcn-io/color-picker";
+import { Textarea } from "@/components/ui/textarea";
 import {
   Tooltip,
   TooltipContent,
@@ -117,7 +118,7 @@ export default function NewEstimateGeneralInformations() {
           name="secondaryColor"
           render={({ field }) => (
             <FormItem>
-              <FormLabel>Primary color</FormLabel>
+              <FormLabel>Secondary color</FormLabel>
               <Popover>
                 <PopoverTrigger
                   asChild
@@ -214,7 +215,7 @@ export default function NewEstimateGeneralInformations() {
           control={form.control}
           name="signLink"
           render={({ field }) => (
-            <FormItem className="col-span-3">
+            <FormItem>
               <FormLabel>Sign link</FormLabel>
               <FormControl>
                 <Input
@@ -222,6 +223,20 @@ export default function NewEstimateGeneralInformations() {
                   placeholder="https://example.com/sign"
                   {...field}
                 />
+              </FormControl>
+              <FormMessage />
+            </FormItem>
+          )}
+        />
+
+        <FormField
+          control={form.control}
+          name="description"
+          render={({ field }) => (
+            <FormItem className="col-span-3">
+              <FormLabel>Description</FormLabel>
+              <FormControl>
+                <Textarea rows={5} placeholder="Description" {...field} />
               </FormControl>
               <FormMessage />
             </FormItem>

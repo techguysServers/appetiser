@@ -17,7 +17,7 @@ type OverviewSectionProps = {
   features: Feature[];
   conceptSummary: {
     name: string;
-    description: string;
+    description?: string;
   };
 };
 
@@ -35,7 +35,9 @@ export default function OverviewSection({
       <div className="bg-white rounded-lg shadow-lg p-6">
         <div>
           <h2 className="text-2xl font-bold text-gray-900">Aperçu du projet</h2>
-          <p className="text-gray-600 mb-6">{conceptSummary.description}</p>
+          {conceptSummary.description && (
+            <p className="text-gray-600 mb-6">{conceptSummary.description}</p>
+          )}
         </div>
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
           <div className="bg-primary/10 p-6 rounded-lg">

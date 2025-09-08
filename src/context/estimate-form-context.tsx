@@ -29,11 +29,24 @@ export function EstimateFormProvider({
     ? estimate
     : {
         name: "",
+        description: "",
         primaryColor: "#000000",
         secondaryColor: "#FFFFFF",
         hourlyRate: 135,
         signLink: "",
         hourMaxMultiplier: 1.2,
+        features: [
+          {
+            label: "",
+            icon: "brain",
+            color: "#000000",
+          },
+          {
+            label: "",
+            icon: "brain",
+            color: "#FF0000",
+          },
+        ],
         steps: [
           {
             name: "Step 1",
@@ -76,6 +89,7 @@ export function EstimateFormProvider({
       .upsert({
         id: estimate?.id,
         name: data.name,
+        description: data.description,
         primary_color: data.primaryColor,
         secondary_color: data.secondaryColor,
         hourly_rate: data.hourlyRate,
