@@ -140,7 +140,7 @@ export default function ShareDialog({
         {hasSignLink && (
           <p className="text-sm text-muted-foreground mt-2">
             <CircleAlert className="inline size-4" /> Be careful with this link,
-            we detected a signing link associated with this estimage. Anyone
+            we detected a signing link associated with this estimate. Anyone
             with this link will be able to sign the estimate. Share it only with
             trusted parties.
           </p>
