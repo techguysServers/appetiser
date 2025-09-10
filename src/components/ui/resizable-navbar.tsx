@@ -246,7 +246,7 @@ export const NavbarLogo = () => {
       <span className="font-medium text-black dark:text-white">
         {process.env.NEXT_PUBLIC_APP_NAME}
       </span>*/}
-      <div className="mt-16 space-y-2">
+      <div className="space-y-2">
         <AppLogo />
         {/*<Image
           src="/logo.png"
