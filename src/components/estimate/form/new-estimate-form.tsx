@@ -46,7 +46,7 @@ export default function NewEstimateForm() {
           </div>
         </form>
       </Form>
-      <div className="sticky top-10 h-fit border rounded-lg overflow-hidden">
+      <div className="sticky top-14 h-fit max-h-5/12 border rounded-lg overflow-auto">
         <EstimateShowcase estimate={form.watch()} hideSign />
       </div>
     </div>
