@@ -25,7 +25,7 @@ export default async function ProtectedPage() {
   const { data: estimates } = await estimateWithSteps;
 
   return (
-    <div className="flex-1 w-full flex flex-col gap-12">
+    <div className="max-w-5xl flex-1 w-full flex flex-col gap-12">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-semibold">Estimates</h1>
         <Button asChild>

@@ -20,11 +20,17 @@ import { Estimate } from "@/schemas/estimate";
 import OptionsSection from "./sections/options";
 import Color from "color";
 
-export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
+export default function EstimateShowcase({
+  estimate,
+  hideSign = false,
+}: {
+  estimate: Estimate;
+  hideSign?: boolean;
+}) {
   const [activeSection, setActiveSection] = useState("overview");
   // Single offer configuration
   const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>(
-    {}
+    {},
   );
   const [expandedOptions, setExpandedOptions] = useState<
     Record<string, boolean>
@@ -38,14 +44,14 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
 
   const selectedFeatures: Feature[] = useMemo(
     () => estimate.features,
-    [estimate]
+    [estimate],
   );
   const selectedConceptSummary = useMemo(
     () => ({
       name: estimate.name,
       description: estimate.description,
     }),
-    [estimate]
+    [estimate],
   );
 
   const toggleStep = (id?: string) => {
@@ -63,7 +69,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
     const color = Color(estimate.primaryColor);
     document.documentElement.style.setProperty(
       "--primary",
-      `rgba(${color.rgb().array().join(",")})`
+      `rgba(${color.rgb().array().join(",")})`,
     );
   }, [estimate]);
 
@@ -73,7 +79,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
       const container = tabsContainerRef.current;
       if (!container) return;
       const tabEl = container.querySelector(
-        `[data-section-id="${activeSection}"]`
+        `[data-section-id="${activeSection}"]`,
       ) as HTMLElement | null;
       if (!tabEl) return;
       const left = tabEl.offsetLeft - container.scrollLeft;
@@ -142,7 +148,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
       { id: "timeline", name: "Calendrier", icon: Clock },
       { id: "costs", name: "Analyse des coûts", icon: DollarSign },
     ],
-    []
+    [],
   );
 
   return (
@@ -201,7 +207,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
           <div className="relative flex items-center justify-between">
             <div
               ref={tabsContainerRef}
-              className="flex space-x-8 overflow-x-auto"
+              className="flex space-x-8 overflow-x-auto no-scrollbar"
             >
               {sections.map((section) => {
                 const Icon = section.icon;
@@ -284,7 +290,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
           />
         )}
 
-        {estimate.signLink && (
+        {estimate.signLink && !hideSign && (
           <div className="fixed bottom-6 right-6 z-50 w-full">
             <div className="max-w-7xl mx-auto px-4 flex justify-end">
               <div className="flex items-center gap-3 bg-white/90 backdrop-blur rounded-full shadow-lg border border-gray-200 px-4 py-2">
