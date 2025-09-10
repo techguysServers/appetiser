@@ -88,8 +88,8 @@ export default function PhasesSection({
                     }}
                     aria-expanded={!!expandedSteps[phase.id ?? ""]}
                   >
-                    <td className="px-6 py-4 whitespace-nowrap text-sm font-medium text-gray-900">
-                      <span className="inline-flex items-center gap-2">
+                    <td className="px-6 py-4 text-sm font-medium text-gray-900">
+                      <span className="inline-flex items-center gap-2 text-ellipsis max-w-full">
                         {phase.subSteps ? (
                           expandedSteps[phase.id ?? ""] ? (
                             <ChevronDown className="w-4 h-4 text-gray-500" />
@@ -115,7 +115,7 @@ export default function PhasesSection({
                         const info = getComplexityInfo(phase.complexity);
                         const percent = Math.min(
                           100,
-                          Math.max(0, Math.round((phase.complexity / 6) * 100))
+                          Math.max(0, Math.round((phase.complexity / 6) * 100)),
                         );
                         return (
                           <div className="min-w-[100px]">
@@ -178,8 +178,8 @@ export default function PhasesSection({
                                           s.complexity === Complexity.HIGH
                                             ? "bg-red-100 text-red-800"
                                             : s.complexity === Complexity.MEDIUM
-                                            ? "bg-yellow-100 text-yellow-800"
-                                            : "bg-green-100 text-green-800"
+                                              ? "bg-yellow-100 text-yellow-800"
+                                              : "bg-green-100 text-green-800"
                                         }`}
                                       >
                                         {convertComplexityToLabel(s.complexity)}
