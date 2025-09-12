@@ -44,7 +44,7 @@ export function SignUpForm({
         email,
         password,
         options: {
-          emailRedirectTo: `${window.location.origin}/estimates`,
+          emailRedirectTo: `${process.env.NEXT_PUBLIC_APP_URL}/estimates`,
         },
       });
       if (error) throw error;
