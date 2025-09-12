@@ -23,14 +23,16 @@ import Color from "color";
 export default function EstimateShowcase({
   estimate,
   hideSign = false,
+  className,
 }: {
   estimate: Estimate;
   hideSign?: boolean;
+  className?: string;
 }) {
   const [activeSection, setActiveSection] = useState("overview");
   // Single offer configuration
   const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>(
-    {},
+    {}
   );
   const [expandedOptions, setExpandedOptions] = useState<
     Record<string, boolean>
@@ -44,14 +46,14 @@ export default function EstimateShowcase({
 
   const selectedFeatures: Feature[] = useMemo(
     () => estimate.features,
-    [estimate],
+    [estimate]
   );
   const selectedConceptSummary = useMemo(
     () => ({
       name: estimate.name,
       description: estimate.description,
     }),
-    [estimate],
+    [estimate]
   );
 
   const toggleStep = (id?: string) => {
@@ -69,7 +71,7 @@ export default function EstimateShowcase({
     const color = Color(estimate.primaryColor);
     document.documentElement.style.setProperty(
       "--primary",
-      `rgba(${color.rgb().array().join(",")})`,
+      `rgba(${color.rgb().array().join(",")})`
     );
   }, [estimate]);
 
@@ -79,7 +81,7 @@ export default function EstimateShowcase({
       const container = tabsContainerRef.current;
       if (!container) return;
       const tabEl = container.querySelector(
-        `[data-section-id="${activeSection}"]`,
+        `[data-section-id="${activeSection}"]`
       ) as HTMLElement | null;
       if (!tabEl) return;
       const left = tabEl.offsetLeft - container.scrollLeft;
@@ -148,12 +150,12 @@ export default function EstimateShowcase({
       { id: "timeline", name: "Calendrier", icon: Clock },
       { id: "costs", name: "Analyse des coûts", icon: DollarSign },
     ],
-    [],
+    []
   );
 
   return (
     <div
-      className="min-h-screen"
+      className={className}
       style={{
         background: `rgba(${Color(estimate.primaryColor)
           .rgb()
@@ -245,13 +247,15 @@ export default function EstimateShowcase({
       <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-40">
         {activeSection === "overview" && (
           <OverviewSection
-            totalHoursMin={totalHoursMin}
-            totalHoursMax={totalHoursMax}
-            totalCostMin={totalCostMin}
-            totalCostMax={totalCostMax}
-            stepsCount={selectedSteps.length}
-            features={selectedFeatures}
-            conceptSummary={selectedConceptSummary}
+            totalHoursMin={totalHoursMin || 0}
+            totalHoursMax={totalHoursMax || 0}
+            totalCostMin={totalCostMin || 0}
+            totalCostMax={totalCostMax || 0}
+            stepsCount={selectedSteps.length || 0}
+            features={selectedFeatures || []}
+            conceptSummary={
+              selectedConceptSummary || { name: "", description: "" }
+            }
           />
         )}
 

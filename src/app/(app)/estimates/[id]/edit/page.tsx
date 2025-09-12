@@ -2,12 +2,13 @@ import NewEstimateForm from "@/components/estimate/form/new-estimate-form";
 import { EstimateFormProvider } from "@/context/estimate-form-context";
 import { createClient } from "@/lib/supabase/server";
 import { supabaseEstimateToEstimate } from "@/lib/utils";
+import { Metadata } from "next";
 
 export const generateMetadata = async ({
   params,
 }: {
   params: Promise<{ id: string }>;
-}) => {
+}): Promise<Metadata> => {
   const estimateId = (await params).id;
   return {
     title: `Appetiser - Edit ${estimateId}`,
@@ -35,7 +36,7 @@ export default async function EditEstimatePage({
 
   return (
     <EstimateFormProvider estimate={supabaseEstimateToEstimate(estimate)}>
-      <NewEstimateForm />
+      <NewEstimateForm className="min-h-screen" />
     </EstimateFormProvider>
   );
 }

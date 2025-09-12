@@ -4,8 +4,9 @@ import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import EstimateCard from "@/components/estimate/card";
 import { supabaseEstimateToEstimate } from "@/lib/utils";
+import { Metadata } from "next";
 
-export const generateMetadata = async () => {
+export const generateMetadata = async (): Promise<Metadata> => {
   return {
     title: "Appetiser - Estimates",
   };
@@ -25,7 +26,7 @@ export default async function ProtectedPage() {
   const { data: estimates } = await estimateWithSteps;
 
   return (
-    <div className="max-w-5xl flex-1 w-full flex flex-col gap-12">
+    <div className="max-w-5xl mx-auto flex-1 w-full flex flex-col gap-12 my-10">
       <div className="flex items-center justify-between">
         <h1 className="text-3xl font-semibold">Estimates</h1>
         <Button asChild>

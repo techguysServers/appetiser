@@ -39,6 +39,7 @@ import { Complexity } from "@/schemas/step";
 import TaskTable from "./task-table";
 import SubStepDialog from "./sub-step-dialog";
 import React from "react";
+import { v4 as uuidv4 } from "uuid";
 
 export default function StepSheetForm({
   open,
@@ -59,6 +60,7 @@ export default function StepSheetForm({
   const handleAddSubStep = () => {
     const currentSubSteps = form.getValues(`steps.${index}.subSteps`) || [];
     const newSubStep = {
+      id: uuidv4(),
       name: `Sub-step ${currentSubSteps.length + 1}`,
       description: "",
       complexity: Complexity.MEDIUM,
@@ -268,13 +270,13 @@ export default function StepSheetForm({
                 }))}
                 onEditTask={(task) => {
                   const taskIndex = subSteps.findIndex(
-                    (s, idx) => `substep-${idx}` === task.id,
+                    (s, idx) => `substep-${idx}` === task.id
                   );
                   handleEditSubStep(taskIndex);
                 }}
                 onDeleteTask={(task) => {
                   const taskIndex = subSteps.findIndex(
-                    (s, idx) => `substep-${idx}` === task.id,
+                    (s, idx) => `substep-${idx}` === task.id
                   );
                   handleSubStepDelete(taskIndex);
                 }}
