@@ -16,11 +16,8 @@ export default function StepListItem({
 }) {
   const { form } = useEsimateForm();
   const stepHours = useMemo(() => {
-    return (
-      (step.hours || 0) +
-      (step.subSteps?.reduce((acc, sub) => acc + sub.hours, 0) || 0)
-    );
-  }, [step.hours, step.subSteps]);
+    return step.subSteps?.reduce((acc, sub) => acc + sub.hours, 0) || 0;
+  }, [step.subSteps]);
 
   const stepCost = useMemo<[number, number]>(() => {
     const hourlyRate = form.getValues("hourlyRate");
