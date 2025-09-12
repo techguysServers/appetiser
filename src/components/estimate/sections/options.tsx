@@ -3,7 +3,7 @@
 import { Fragment } from "react";
 import { ChevronDown, ChevronRight } from "lucide-react";
 import { convertComplexityToLabel, getComplexityInfo } from "@/lib/utils";
-import { Complexity, Step } from "@/schemas/step";
+import { Complexity, Step, SubStep } from "@/schemas/step";
 
 type OptionsSectionProps = {
   computedOptions: (Step & {
@@ -90,7 +90,7 @@ export default function OptionsSection({
                         const info = getComplexityInfo(opt.complexity);
                         const percent = Math.min(
                           100,
-                          Math.max(0, Math.round((opt.complexity / 6) * 100))
+                          Math.max(0, Math.round((opt.complexity / 6) * 100)),
                         );
                         return (
                           <div className="min-w-[100px]">
@@ -139,7 +139,7 @@ export default function OptionsSection({
                                 </tr>
                               </thead>
                               <tbody>
-                                {opt.subSteps.map((s: Step, i: number) => (
+                                {opt.subSteps.map((s: SubStep, i: number) => (
                                   <tr key={i} className="border-t text-sm">
                                     <td className="px-4 py-2 font-medium text-gray-900">
                                       {s.name}
@@ -153,8 +153,8 @@ export default function OptionsSection({
                                           s.complexity === Complexity.HIGH
                                             ? "bg-red-100 text-red-800"
                                             : s.complexity === Complexity.MEDIUM
-                                            ? "bg-yellow-100 text-yellow-800"
-                                            : "bg-green-100 text-green-800"
+                                              ? "bg-yellow-100 text-yellow-800"
+                                              : "bg-green-100 text-green-800"
                                         }`}
                                       >
                                         {convertComplexityToLabel(s.complexity)}
