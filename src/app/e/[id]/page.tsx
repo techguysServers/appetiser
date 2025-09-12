@@ -78,6 +78,8 @@ export default async function EstimatePage({
     return notFound();
   }
 
+  console.log(supabaseEstimate);
+
   return (
     <EstimateShowcase estimate={supabaseEstimateToEstimate(supabaseEstimate)} />
   );

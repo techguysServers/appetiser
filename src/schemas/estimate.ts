@@ -34,3 +34,5 @@ export const CreateEstimateSchema = z.object({
 });
 
 export type Estimate = z.infer<typeof CreateEstimateSchema> & { id?: string };
+
+export const EditEstimateSchema = CreateEstimateSchema.partial(); // Used for AI tool

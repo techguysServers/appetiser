@@ -20,7 +20,15 @@ import { Estimate } from "@/schemas/estimate";
 import OptionsSection from "./sections/options";
 import Color from "color";
 
-export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
+export default function EstimateShowcase({
+  estimate,
+  hideSign = false,
+  className,
+}: {
+  estimate: Estimate;
+  hideSign?: boolean;
+  className?: string;
+}) {
   const [activeSection, setActiveSection] = useState("overview");
   // Single offer configuration
   const [expandedSteps, setExpandedSteps] = useState<Record<string, boolean>>(
@@ -147,7 +155,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
 
   return (
     <div
-      className="min-h-screen"
+      className={className}
       style={{
         background: `rgba(${Color(estimate.primaryColor)
           .rgb()
@@ -201,7 +209,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
           <div className="relative flex items-center justify-between">
             <div
               ref={tabsContainerRef}
-              className="flex space-x-8 overflow-x-auto"
+              className="flex space-x-8 overflow-x-auto no-scrollbar"
             >
               {sections.map((section) => {
                 const Icon = section.icon;
@@ -239,13 +247,15 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
       <main className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 pb-40">
         {activeSection === "overview" && (
           <OverviewSection
-            totalHoursMin={totalHoursMin}
-            totalHoursMax={totalHoursMax}
-            totalCostMin={totalCostMin}
-            totalCostMax={totalCostMax}
-            stepsCount={selectedSteps.length}
-            features={selectedFeatures}
-            conceptSummary={selectedConceptSummary}
+            totalHoursMin={totalHoursMin || 0}
+            totalHoursMax={totalHoursMax || 0}
+            totalCostMin={totalCostMin || 0}
+            totalCostMax={totalCostMax || 0}
+            stepsCount={selectedSteps.length || 0}
+            features={selectedFeatures || []}
+            conceptSummary={
+              selectedConceptSummary || { name: "", description: "" }
+            }
           />
         )}
 
@@ -284,7 +294,7 @@ export default function EstimateShowcase({ estimate }: { estimate: Estimate }) {
           />
         )}
 
-        {estimate.signLink && (
+        {estimate.signLink && !hideSign && (
           <div className="fixed bottom-6 right-6 z-50 w-full">
             <div className="max-w-7xl mx-auto px-4 flex justify-end">
               <div className="flex items-center gap-3 bg-white/90 backdrop-blur rounded-full shadow-lg border border-gray-200 px-4 py-2">

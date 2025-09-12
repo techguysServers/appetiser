@@ -112,7 +112,11 @@ export default function OverviewSection({
                     className="p-2 rounded-full"
                     style={{ backgroundColor: `${f.color}20`, color: f.color }}
                   >
-                    <Icon className="h-5 w-5" />
+                    {f.icon ? (
+                      <Icon className="h-5 w-5" />
+                    ) : (
+                      <Brain className="h-5 w-5" />
+                    )}
                   </div>
                   <span className="text-gray-700">{f.label}</span>
                 </div>

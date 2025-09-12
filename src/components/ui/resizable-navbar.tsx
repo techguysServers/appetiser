@@ -9,6 +9,8 @@ import {
 } from "motion/react";
 
 import React, { useRef, useState } from "react";
+import AppLogo from "../common/logo";
+import Image from "next/image";
 
 interface NavbarProps {
   children: React.ReactNode;
@@ -235,7 +237,7 @@ export const NavbarLogo = () => {
       href="#"
       className="relative z-20 mr-4 flex items-center space-x-2 px-2 py-1 text-sm font-normal text-black"
     >
-      <img
+      {/*<img
         src="https://assets.aceternity.com/logo-dark.png"
         alt="logo"
         width={30}
@@ -243,7 +245,17 @@ export const NavbarLogo = () => {
       />
       <span className="font-medium text-black dark:text-white">
         {process.env.NEXT_PUBLIC_APP_NAME}
-      </span>
+      </span>*/}
+      <div className="space-y-2">
+        <AppLogo />
+        {/* <Image
+          src="/logo.png"
+          width={800}
+          height={200}
+          className="object-contain mt-40"
+          alt="Appetiser Logo"
+        /> */}
+      </div>
     </a>
   );
 };

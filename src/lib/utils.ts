@@ -1,7 +1,7 @@
 import { Estimate, SupabaseEstimate } from "@/schemas/estimate";
 import { SupabaseFeature } from "@/schemas/features";
 import { SupabaseSchedule } from "@/schemas/schedule";
-import { Complexity, Step, SupabaseStep } from "@/schemas/step";
+import { Complexity, Step, SubStep, SupabaseStep } from "@/schemas/step";
 import { clsx, type ClassValue } from "clsx";
 import { twMerge } from "tailwind-merge";
 
@@ -28,7 +28,7 @@ export const getStepHoursMin = (step: Step): number => {
   if (step.subSteps && step.subSteps.length > 0) {
     return step.subSteps.reduce((acc, s) => acc + s.hours, 0);
   }
-  return step.hours ?? 0;
+  return 0;
 };
 
 export const getStepComplexity = (step: Step): number => {
@@ -36,7 +36,7 @@ export const getStepComplexity = (step: Step): number => {
     const sum = step.subSteps.reduce((acc, s) => acc + s.complexity, 0);
     return sum / step.subSteps.length;
   }
-  return step?.complexity ?? 0;
+  return Complexity.LOW;
 };
 
 export const truncateLabel = (label: string, maxLength: number = 15) => {
@@ -71,26 +71,25 @@ export const supabaseEstimateToEstimate = (
     schedule: SupabaseSchedule[];
   }
 ): Estimate => {
-  const mainSteps = estimate.steps.filter(
+  console.log(estimate);
+  const mainSteps: SupabaseStep[] = estimate.steps.filter(
     (s: SupabaseStep) => s.parent_id === null
   );
 
-  const mapSubSteps = (parentId: string): Step[] => {
-    const subSteps = estimate.steps.filter(
+  const mapSubSteps = (parentId: string): SubStep[] => {
+    const subSteps: SupabaseStep[] = estimate.steps.filter(
       (s: SupabaseStep) => s.parent_id === parentId
     );
-    return subSteps.map((s: SupabaseStep) => ({
-      id: s.id,
-      name: s.name,
-      description: s.description,
-      complexity: s.complexity,
-      hours: s.hours ?? 0,
-      color: s.color,
-      disableRate: s.disable_max_multiplier || false,
-      isAdditional: s.is_additional || false,
-      notes: s.notes || undefined,
-      subSteps: mapSubSteps(s.id),
-    }));
+    return subSteps.map(
+      (s: SupabaseStep, i: number): SubStep => ({
+        id: s.id,
+        name: s.name,
+        description: s.description,
+        complexity: s.complexity,
+        hours: s.hours ?? 0,
+        order: i,
+      })
+    );
   };
 
   const schedule = estimate.schedule.map((s) => ({
@@ -116,8 +115,7 @@ export const supabaseEstimateToEstimate = (
       id: s.id,
       name: s.name,
       description: s.description,
-      complexity: s.complexity,
-      hours: s.hours || 0,
+      order: 0,
       color: s.color,
       disableRate: s.disable_max_multiplier || false,
       isAdditional: s.is_additional || false,
@@ -127,3 +125,33 @@ export const supabaseEstimateToEstimate = (
     schedule: schedule,
   };
 };
+
+export async function convertFilesToDataURLs(
+  files: FileList
+): Promise<
+  { type: "file"; filename: string; mediaType: string; url: string }[]
+> {
+  return Promise.all(
+    Array.from(files).map(
+      (file) =>
+        new Promise<{
+          type: "file";
+          filename: string;
+          mediaType: string;
+          url: string;
+        }>((resolve, reject) => {
+          const reader = new FileReader();
+          reader.onload = () => {
+            resolve({
+              type: "file",
+              filename: file.name,
+              mediaType: file.type,
+              url: reader.result as string, // Data URL
+            });
+          };
+          reader.onerror = reject;
+          reader.readAsDataURL(file);
+        })
+    )
+  );
+}

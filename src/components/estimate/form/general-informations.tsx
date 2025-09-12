@@ -49,7 +49,7 @@ export default function NewEstimateGeneralInformations() {
         </CardDescription>
       </CardHeader>
 
-      <CardContent className="grid grid-cols-3 gap-6">
+      <CardContent className="grid grid-cols-1 md:grid-cols-2 2xl:grid-cols-3 gap-6">
         <FormField
           control={form.control}
           name="name"
@@ -232,7 +232,7 @@ export default function NewEstimateGeneralInformations() {
           control={form.control}
           name="description"
           render={({ field }) => (
-            <FormItem className="col-span-3">
+            <FormItem className="md:col-span-2 2xl:col-span-3">
               <FormLabel>Description</FormLabel>
               <FormControl>
                 <Textarea rows={5} placeholder="Description" {...field} />

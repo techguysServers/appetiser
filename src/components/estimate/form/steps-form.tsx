@@ -6,12 +6,12 @@ import {
   CardHeader,
   CardTitle,
 } from "@/components/ui/card";
-import { Complexity } from "@/schemas/step";
 import { useFieldArray } from "react-hook-form";
 import StepListItem from "./step-list-item";
 import React from "react";
 import StepSheetForm from "./step-sheet-form";
 import { useEsimateForm } from "@/context/estimate-form-context";
+import { v4 as uuidv4 } from "uuid";
 
 export default function NewEstimateSteps() {
   const { form } = useEsimateForm();
@@ -28,13 +28,14 @@ export default function NewEstimateSteps() {
 
   const handleAddStep = () => {
     append({
+      id: uuidv4(),
       name: `Step ${steps.length + 1}`,
+      order: steps.length,
       description: "",
-      complexity: Complexity.MEDIUM,
-      hours: 0,
       color: "#000000",
       disableRate: false,
       isAdditional: false,
+      notes: "",
       subSteps: [],
     });
     setEditingStepIndex(steps.length);
